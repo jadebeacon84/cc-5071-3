@@ -1,0 +1,11 @@
+{
+  "name": "convex-contact-kit",
+  "version": "1.0.0",
+  "description": "Convex contact geometry module: GJK/EPA, clipped contact manifolds, sequential impulse solver, traceable UI",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "start": "node tools/server.js"
+  },
+  "license": "MIT"
+}
