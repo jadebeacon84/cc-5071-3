@@ -5,7 +5,11 @@
   "type": "module",
   "scripts": {
     "test": "node --test tests/*.test.js",
-    "start": "node tools/server.js"
+    "start": "node tools/server.js",
+    "ui": "sh scripts/start-ui.sh",
+    "check": "node tools/cli.js check --dir release/evidence/local-runs/runs",
+    "degenerate": "node tools/cli.js degenerate --out release/evidence/local-runs/degenerate.json",
+    "release": "node tools/package-release.js"
   },
   "license": "MIT"
 }

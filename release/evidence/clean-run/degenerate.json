@@ -1,0 +1,86 @@
+{
+  "schema": "convex-contact-degenerate/v1",
+  "probes": [
+    {
+      "name": "point-cloud",
+      "expectBuilt": false,
+      "classification": {
+        "ok": false,
+        "status": "point",
+        "reason": "all points coincide",
+        "vertexCount": 3,
+        "hullBlocked": true
+      },
+      "constructed": {
+        "built": false,
+        "status": "point",
+        "error": "convex hull needs >= 3 distinct points"
+      }
+    },
+    {
+      "name": "collinear-line",
+      "expectBuilt": false,
+      "classification": {
+        "ok": false,
+        "status": "line",
+        "reason": "points are collinear: no 2D convex body",
+        "vertexCount": 4,
+        "hullBlocked": true
+      },
+      "constructed": {
+        "built": false,
+        "status": "line",
+        "error": "points are collinear: no convex hull exists"
+      }
+    },
+    {
+      "name": "two-points",
+      "expectBuilt": false,
+      "classification": {
+        "ok": false,
+        "status": "insufficient",
+        "reason": "need >= 3 vertices",
+        "vertexCount": 2,
+        "hullBlocked": true
+      },
+      "constructed": {
+        "built": false,
+        "status": "insufficient",
+        "error": "convex hull needs >= 3 distinct points"
+      }
+    },
+    {
+      "name": "non-finite",
+      "expectBuilt": false,
+      "classification": {
+        "ok": false,
+        "status": "non-finite",
+        "reason": "non-finite coordinate",
+        "vertexCount": 3,
+        "hullBlocked": false
+      },
+      "constructed": {
+        "built": false,
+        "status": "non-finite",
+        "error": "convex hull input contains a non-finite coordinate"
+      }
+    },
+    {
+      "name": "noisy-pentagon-recovers",
+      "expectBuilt": true,
+      "classification": {
+        "ok": false,
+        "status": "bad-winding",
+        "reason": "vertices are clockwise",
+        "vertexCount": 7,
+        "area": -0.6,
+        "hullBlocked": false
+      },
+      "constructed": {
+        "built": true,
+        "vertexCount": 5,
+        "area": 0.6
+      }
+    }
+  ]
+}

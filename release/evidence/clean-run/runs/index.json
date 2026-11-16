@@ -1,0 +1,37 @@
+{
+  "schema": "convex-contact-evidence-index/v1",
+  "generatedAt": "2026-11-16T05:59:33.238Z",
+  "frames": 240,
+  "scenes": [
+    {
+      "scene": "push",
+      "recordPath": "/workspace/release/staging-clean/release-evidence/runs/push.record.json",
+      "summaryPath": "/workspace/release/staging-clean/release-evidence/runs/push.verify.json",
+      "ok": true
+    },
+    {
+      "scene": "stack",
+      "recordPath": "/workspace/release/staging-clean/release-evidence/runs/stack.record.json",
+      "summaryPath": "/workspace/release/staging-clean/release-evidence/runs/stack.verify.json",
+      "ok": true
+    },
+    {
+      "scene": "wedge",
+      "recordPath": "/workspace/release/staging-clean/release-evidence/runs/wedge.record.json",
+      "summaryPath": "/workspace/release/staging-clean/release-evidence/runs/wedge.verify.json",
+      "ok": true
+    },
+    {
+      "scene": "rotated",
+      "recordPath": "/workspace/release/staging-clean/release-evidence/runs/rotated.record.json",
+      "summaryPath": "/workspace/release/staging-clean/release-evidence/runs/rotated.verify.json",
+      "ok": true
+    },
+    {
+      "scene": "degenerate",
+      "recordPath": "/workspace/release/staging-clean/release-evidence/runs/degenerate.record.json",
+      "summaryPath": "/workspace/release/staging-clean/release-evidence/runs/degenerate.verify.json",
+      "ok": true
+    }
+  ]
+}

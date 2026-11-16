@@ -1,0 +1,306 @@
+{
+  "schema": "convex-contact-release-manifest/v1",
+  "name": "convex-contact-kit",
+  "version": "1.0.0",
+  "builtAt": "2026-11-16T05:59:33.287Z",
+  "sourceCommit": "57ace11fc9e32d3a95568dde5d6136135c758f95",
+  "allowList": [
+    "index.html",
+    "package.json",
+    "src",
+    "renderer",
+    "tests",
+    "tools",
+    "scripts",
+    "docs"
+  ],
+  "checks": [
+    {
+      "name": "node-test",
+      "ok": true,
+      "log": "release-evidence/clean-test.log"
+    },
+    {
+      "name": "degenerate",
+      "ok": true,
+      "log": "release-evidence/clean-degenerate.log"
+    },
+    {
+      "name": "scene-check",
+      "ok": true,
+      "log": "release-evidence/clean-check.log"
+    }
+  ],
+  "files": [
+    {
+      "path": "docs/README.md",
+      "sha256": "7475f599748d978c6a300b0cfcce99ab059f655b6f4cc13d1856d8bff561f3a1",
+      "bytes": 4019
+    },
+    {
+      "path": "docs/RELEASE.md",
+      "sha256": "f50953fa824c7010c09818197c71d943f011a90a4a6ddc69a7bb6211da461609",
+      "bytes": 2487
+    },
+    {
+      "path": "docs/USAGE.md",
+      "sha256": "e7566ad23c72b96facdddea54d0694d6f230574f6483a9b35908e496282d16fb",
+      "bytes": 2392
+    },
+    {
+      "path": "docs/VERIFICATION.md",
+      "sha256": "3f29ef69c73f60451db08d5a282a03a6981e95449b1aeb2f7f73befb5149866e",
+      "bytes": 3283
+    },
+    {
+      "path": "index.html",
+      "sha256": "76d6a4e313dc9a645b24164ef1f3e7920fba2ca767a1bdb833c41288471ef7a0",
+      "bytes": 4851
+    },
+    {
+      "path": "package.json",
+      "sha256": "25996f7f69a6d306b037509c7fd867c39f210dbd1b45341083418e50836c9c6d",
+      "bytes": 587
+    },
+    {
+      "path": "release-evidence/clean-check.log",
+      "sha256": "e88b0a3a8af2bd7523f4f4cabc69d2dd71a952467bbd9ebe06af9a25eed38dcb",
+      "bytes": 271
+    },
+    {
+      "path": "release-evidence/clean-degenerate.log",
+      "sha256": "9c4293cc2c0ae2adf3633c7e49379437c8d66efc670f2312f2853f8f24618d4b",
+      "bytes": 513
+    },
+    {
+      "path": "release-evidence/clean-test.log",
+      "sha256": "64d9cc5596f64cf6d501192352ebaabc8d97b3d4ce86dd00afa796d9825385d8",
+      "bytes": 10389
+    },
+    {
+      "path": "release-evidence/degenerate.json",
+      "sha256": "e2bc5cc7589c2a661b83b586ee565437b7f2814c650137039296c90482bc6f7c",
+      "bytes": 2070
+    },
+    {
+      "path": "release-evidence/runs/degenerate.record.json",
+      "sha256": "e0c2659c5c1eef84215fad4223ee96df9713d9b504f86971dbb33e7ee165e023",
+      "bytes": 2875221
+    },
+    {
+      "path": "release-evidence/runs/degenerate.verify.json",
+      "sha256": "94bb8de2f44eb31edbe2762cf72d37bc6e452b0ccd760da41c8fb838c997900e",
+      "bytes": 17731
+    },
+    {
+      "path": "release-evidence/runs/index.json",
+      "sha256": "78da2e56dfbb9c5662f2863b061c3e8e5c212e86d2288345f11bd0812f23b768",
+      "bytes": 1384
+    },
+    {
+      "path": "release-evidence/runs/push.record.json",
+      "sha256": "33376df0373823fe3eb287a7d5105cd54e93f62378cb646f94d26e1bf7be6cf1",
+      "bytes": 2216790
+    },
+    {
+      "path": "release-evidence/runs/push.verify.json",
+      "sha256": "5e0922c98f78648166be71fb9d1d06a4bd57b38c68aaebff7ec06b7d7f4cb14a",
+      "bytes": 17725
+    },
+    {
+      "path": "release-evidence/runs/rotated.record.json",
+      "sha256": "e3d4ccc99043a3da66430003464ba7bf6c2eaf25351d2c93e43f1a4a97830c0a",
+      "bytes": 1987758
+    },
+    {
+      "path": "release-evidence/runs/rotated.verify.json",
+      "sha256": "fa52ffb42c5e2ef6e4a356e9d3eb3ef2cb2e88b0f5998002c07582990ff64212",
+      "bytes": 17747
+    },
+    {
+      "path": "release-evidence/runs/stack.record.json",
+      "sha256": "9d9d398225a959b195c1a56dacdbe71f727aae948b1e1d93912d289afde8f1f0",
+      "bytes": 2288160
+    },
+    {
+      "path": "release-evidence/runs/stack.verify.json",
+      "sha256": "c3359aa74c75dbf137dd9d3330578aaf9ba6a0d24a8f4fa527f99c7cdabb4118",
+      "bytes": 17800
+    },
+    {
+      "path": "release-evidence/runs/wedge.record.json",
+      "sha256": "b3341a54d06d8e0368abf6335348ff3641091ab4b0c4f8a667b103e4bf24d161",
+      "bytes": 1094465
+    },
+    {
+      "path": "release-evidence/runs/wedge.verify.json",
+      "sha256": "b6943061d0e50c4bbf08910ff5dcdb2f243b5256d86b5cc2c53332683d820959",
+      "bytes": 17867
+    },
+    {
+      "path": "release-manifest.json",
+      "sha256": "847cb99527c3abdbbf77c6295370b193ddf8cd13754eb5ee5edb78afdf47c168",
+      "bytes": 9172
+    },
+    {
+      "path": "renderer/app.js",
+      "sha256": "74701078128b7d23d798a276c2561489f37379265ca7f20aa485afd78d0d2520",
+      "bytes": 16817
+    },
+    {
+      "path": "scripts/headless-check.sh",
+      "sha256": "33d79d14a8bfcdf0f42b76d6a9888950fd0d06ddd161e1751b2f445f1ccfb8d9",
+      "bytes": 674
+    },
+    {
+      "path": "scripts/start-ui.sh",
+      "sha256": "3716522f31138dba6d5bebb6f815b1625b7335a25b80619b423361cef4830114",
+      "bytes": 487
+    },
+    {
+      "path": "src/core/geom.js",
+      "sha256": "38fa4973d48201045f4e2219d58d8997d5b0b52ba03ed4843ac73b57ef5d6e21",
+      "bytes": 1887
+    },
+    {
+      "path": "src/core/mat22.js",
+      "sha256": "f0abf48c0df7fd7cabf93d75842dda991665e2ec0d056c74d3aa01c5f7a56301",
+      "bytes": 769
+    },
+    {
+      "path": "src/core/transform.js",
+      "sha256": "fc2861d2748662bf5ead34e32fae24683c480bfc03b33b28eba7ba1f4a8a4672",
+      "bytes": 872
+    },
+    {
+      "path": "src/core/vec2.js",
+      "sha256": "426a5f7113068b7a88e01f40562176593b96304473db820988c1928d690880fb",
+      "bytes": 1460
+    },
+    {
+      "path": "src/geometry/detect.js",
+      "sha256": "2e0492a46c6391a8d5bc3b572725b24176574d2e341d91c9f44b65f5aa1c6359",
+      "bytes": 1745
+    },
+    {
+      "path": "src/geometry/epa.js",
+      "sha256": "01b664777770f98e5098c93150dc63424ceaec04c558a75579646b3f1fbddfee",
+      "bytes": 12385
+    },
+    {
+      "path": "src/geometry/gjk.js",
+      "sha256": "6e70ce79010836e10e1e3f7acc6b4f05668d920b65fc694948b2b706537e4686",
+      "bytes": 14396
+    },
+    {
+      "path": "src/geometry/manifold.js",
+      "sha256": "dd188a108772e60c0ea5d2ad36b23c03ffac828a99632ffc76d827598a8ad432",
+      "bytes": 8753
+    },
+    {
+      "path": "src/geometry/sat.js",
+      "sha256": "e10d303b98cc005e46954cf36c133ddcd8ef40c75dbe7ebe6013509d1008d850",
+      "bytes": 2556
+    },
+    {
+      "path": "src/geometry/scenes.js",
+      "sha256": "4cf593a7576ee0f2316ce5627aa1b04e4c14526276a740baef1d04a612707387",
+      "bytes": 3490
+    },
+    {
+      "path": "src/geometry/shapes.js",
+      "sha256": "e58d33277fb1ea6276c740b3bcc87907692a89bb81aedd2ef4a621e5a1f9961c",
+      "bytes": 7177
+    },
+    {
+      "path": "src/geometry/validate.js",
+      "sha256": "2f069ddc39d2ed77bbeeda873040eea126bafd0b84214093f6a2c4b7b443f9b7",
+      "bytes": 4481
+    },
+    {
+      "path": "src/geometry/verify.js",
+      "sha256": "e3c89047abae9cc527d401eaaa2973de7e48a693d156fb93767f5c9138f28696",
+      "bytes": 9499
+    },
+    {
+      "path": "src/physics/body.js",
+      "sha256": "948eec4e3f6eed5902e9e42c734448ef0bfef450701d761f6412708aac12f00a",
+      "bytes": 1606
+    },
+    {
+      "path": "src/physics/solver.js",
+      "sha256": "d4372a57cc2821c4064c871d78062d33e4657d8a4ddd87282c41fe33ec2bf25a",
+      "bytes": 7559
+    },
+    {
+      "path": "src/physics/world.js",
+      "sha256": "2d46d4eb0a787ddfa78ca24cda29525b48399c0c5f1cc8151368388ecd0c271c",
+      "bytes": 5580
+    },
+    {
+      "path": "tests/cli-record.test.js",
+      "sha256": "f885c12d5d85d23456a12e932ed69f6aa28150d63460f713b600e4aafa800718",
+      "bytes": 3708
+    },
+    {
+      "path": "tests/gjk-epa.test.js",
+      "sha256": "e28f6274bdcf8db4a5da103db9ffc1348b3c339c72e1265bd4a4e063f6c478e7",
+      "bytes": 7203
+    },
+    {
+      "path": "tests/manifold.test.js",
+      "sha256": "0ef3747fe37d66fd6e1434615b30aef704c0810f97f926582203ed72442a1d56",
+      "bytes": 4991
+    },
+    {
+      "path": "tests/math.test.js",
+      "sha256": "c9eb5e029f2ae1a51744923199af487c557d7ad1e8177029ab381b6cf865adea",
+      "bytes": 1850
+    },
+    {
+      "path": "tests/shapes.test.js",
+      "sha256": "19379e3a4f9ed5b23ec492b0e41694f66a2ecca7553a3b22cb13a35e329d89bd",
+      "bytes": 2107
+    },
+    {
+      "path": "tests/solver.test.js",
+      "sha256": "8a0005fd7ae8f1fcdf1bd197c857a89ba944cc1c68a88df68f22bc8a73e49516",
+      "bytes": 6405
+    },
+    {
+      "path": "tests/validate.test.js",
+      "sha256": "59448618b4a1196c1166e96d44589d287eb04cf42e288b59970e61e940ea1624",
+      "bytes": 2572
+    },
+    {
+      "path": "tests/verify.test.js",
+      "sha256": "88fa9f5f564a227e922eafb939a706ff05d46ce3c762d8613e8d26db1681b614",
+      "bytes": 4215
+    },
+    {
+      "path": "tools/cli.js",
+      "sha256": "a363fd4aa16d9e8658730e74401691129aead49b554bb2acc8338ad94fa87e74",
+      "bytes": 6179
+    },
+    {
+      "path": "tools/lib/fs-util.js",
+      "sha256": "04c2211c4c83b31c962e62e388e438bfe6a6e9a2c5efe7e4175a2c2447dce320",
+      "bytes": 1070
+    },
+    {
+      "path": "tools/lib/records.js",
+      "sha256": "400f23acf2afd0f9f5542899c0b4f85016d93568d6cc30bf58228a00e81ce941",
+      "bytes": 11539
+    },
+    {
+      "path": "tools/package-release.js",
+      "sha256": "bf93e76b495ffdd5e37def6dc2dea1262075ab55551d8056718b398e18a07426",
+      "bytes": 6411
+    },
+    {
+      "path": "tools/server.js",
+      "sha256": "a67672c7b7bf1e282679d2447c62e0eacd97d48410bf5df427c98707c0c32936",
+      "bytes": 1755
+    }
+  ]
+}

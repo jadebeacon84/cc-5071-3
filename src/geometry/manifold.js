@@ -28,6 +28,10 @@ export function buildManifold(shapeA, shapeB, epaResult) {
     ? { a: rawEdge.b, b: rawEdge.a, tangent: Vec2.neg(rawEdge.tangent), normal: n.clone(), index: rawEdge.index }
     : { a: rawEdge.a, b: rawEdge.b, tangent: rawEdge.tangent, normal: n.clone(), index: rawEdge.index };
   const normal = n.clone();
+  // The tangent follows the reference edge direction: the clip planes are built
+  // along it, so it must stay aligned with that edge even when the EPA normal
+  // differs slightly from that edge's own outward normal (see FACE_ALIGN_MIN).
+  // A zero-length degenerate edge has no direction, so fall back to the normal.
   const tangent = refEdge.tangent.len2() > EPS_LEN * EPS_LEN
     ? Vec2.normalize(refEdge.tangent)
     : Vec2.perpLeft(normal);

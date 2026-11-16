@@ -1,6 +1,7 @@
 import { Transform } from '../core/transform.js';
 import { Vec2 } from '../core/vec2.js';
 import { EPS_LEN, polygonArea2, signedArea2 } from '../core/geom.js';
+import { classifyRawPoints } from './validate.js';
 
 // Convex polygon whose local vertices are ordered CCW about the local origin
 // (the local origin is the mass/rotation centre, not necessarily the centroid).
@@ -151,9 +152,22 @@ export class WedgeShape extends ConvexShape {
 
 // Any convex prop: raw points are deduplicated and a robust Andrew hull is built,
 // so duplicated vertices and collinear input cannot produce a broken polygon.
+// A degenerate input (point/line/two-point/non-finite) throws an error carrying
+// an explicit `status` from validate.js, so callers never get a silently bad body.
 export class RotatedConvex extends ConvexShape {
   constructor(rawPoints, name = 'rotated-convex') {
-    super(buildHull(rawPoints), name);
+    const diagnosis = classifyRawPoints(rawPoints);
+    let hull;
+    try {
+      hull = buildHull(rawPoints);
+    } catch (err) {
+      err.status = err.status ?? diagnosis.status;
+      err.diagnosis = diagnosis;
+      err.hullBlocked = diagnosis.hullBlocked ?? true;
+      throw err;
+    }
+    super(hull, name);
+    this.diagnosis = diagnosis;
   }
 }
 
@@ -173,8 +187,16 @@ function dedupePoints(points) {
 }
 
 // Andrew monotone-chain hull. Collinear points on an edge are dropped; the hull
-// is returned CCW. Throws if the input is degenerate (line/point).
+// is returned CCW. Throws if the input is degenerate (line/point) or contains
+// a non-finite coordinate, so a NaN vertex can never be silently dropped.
 export function buildHull(rawPoints) {
+  for (const p of rawPoints) {
+    if (!Number.isFinite(p.x) || !Number.isFinite(p.y)) {
+      const err = new Error('convex hull input contains a non-finite coordinate');
+      err.status = 'non-finite';
+      throw err;
+    }
+  }
   const pts = dedupePoints(rawPoints);
   if (pts.length < 3) throw new Error('convex hull needs >= 3 distinct points');
   pts.sort((a, b) => (a.x !== b.x ? a.x - b.x : a.y - b.y));

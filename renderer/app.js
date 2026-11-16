@@ -1,11 +1,14 @@
 import { Vec2 } from '../src/core/vec2.js';
 import { buildScene, SCENE_NAMES } from '../src/geometry/scenes.js';
 import { RESIDUAL_SLOP } from '../src/core/geom.js';
+import { separatingVector, verifyManifold } from '../src/geometry/verify.js';
+import { validateConvex } from '../src/geometry/validate.js';
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const panel = document.getElementById('panel');
 const stage = document.getElementById('stage');
+const banner = document.getElementById('error-banner');
 
 const sceneSelect = document.getElementById('scene');
 const playBtn = document.getElementById('play');
@@ -15,6 +18,7 @@ const speedSelect = document.getElementById('speed');
 const showSupport = document.getElementById('show-support');
 const showEpa = document.getElementById('show-epa');
 const showManifold = document.getElementById('show-manifold');
+const showSeparation = document.getElementById('show-separation');
 const showAabb = document.getElementById('show-aabb');
 
 for (const name of SCENE_NAMES) {
@@ -34,9 +38,23 @@ const COLORS = {
   normal: '#ffe08a',
   support: '#c792ea',
   epa: '#4fc3f7',
+  separation: '#ef7d7d',
   aabb: 'rgba(242,193,78,0.55)',
   witness: '#66d18e'
 };
+
+// Exceptions from the actual geometry/solver path are surfaced in the UI rather
+// than silently dropping a frame. The banner is cleared on the next good frame.
+function showError(err) {
+  banner.textContent = `convex contact error: ${err?.message || err}`;
+  banner.classList.add('show');
+}
+function clearError() {
+  banner.classList.remove('show');
+  banner.textContent = '';
+}
+window.addEventListener('unhandledrejection', (e) => showError(e.reason));
+window.addEventListener('error', (e) => showError(e.message));
 
 let scene = buildScene(sceneSelect.value);
 let running = true;
@@ -203,6 +221,22 @@ function drawManifold(pair) {
   }
 }
 
+// Separating vector computed live from GJK/SAT (not stored data): the minimum
+// translation of B along a unit axis that clears A. Drawn from B's centre.
+function drawSeparation(pair) {
+  const sep = separatingVector(pair.bodyA.shape, pair.bodyB.shape, pair.gjk);
+  if (sep.state === 'touch' || sep.vector.len2() <= 1e-14) return;
+  const origin = pair.bodyB.xf.p;
+  const tip = Vec2.add(origin, sep.vector);
+  line(origin, tip, COLORS.separation, 2.5, [7, 4]);
+  // Arrow head.
+  const head = 0.11;
+  const back = Vec2.add(tip, Vec2.mul(Vec2.neg(sep.normal), head));
+  const side = Vec2.perpLeft(sep.normal);
+  line(tip, Vec2.add(back, Vec2.mul(side, head * 0.55)), COLORS.separation, 2.5);
+  line(tip, Vec2.sub(back, Vec2.mul(side, head * 0.55)), COLORS.separation, 2.5);
+}
+
 function render() {
   ctx.clearRect(0, 0, camera.w, camera.h);
   drawGrid();
@@ -214,6 +248,7 @@ function render() {
     if (showSupport.checked) drawSupportTrail(pair);
     if (showEpa.checked) drawEpa(pair);
     if (showManifold.checked) drawManifold(pair);
+    if (showSeparation.checked) drawSeparation(pair);
   }
 }
 
@@ -250,12 +285,34 @@ function renderPanel() {
   for (const pair of pairs) {
     const m = pair.manifold;
     const epa = pair.epa;
+    // Live manifold validity + separating vector, recomputed from geometry.
+    let verdict = null;
+    try {
+      verdict = verifyManifold(pair.bodyA.shape, pair.bodyB.shape, m);
+    } catch (err) {
+      showError(err);
+    }
+    const sep = (() => {
+      try {
+        return separatingVector(pair.bodyA.shape, pair.bodyB.shape, pair.gjk);
+      } catch (err) {
+        showError(err);
+        return null;
+      }
+    })();
     html += `<div class="kv"><span>${pair.bodyA.label} → ${pair.bodyB.label}</span>
       <span class="badge method">${epa ? epa.method : 'separated'}</span></div>`;
+    html += `<div class="kv"><span>manifold validity</span>
+      <span class="badge ${verdict?.ok ? 'ok' : 'bad'}">${verdict ? (verdict.ok ? 'valid' : verdict.failedChecks.join(',')) : 'error'}</span></div>`;
     html += `<div class="kv"><span>normal n (push-out B)</span><span>${vec(m.normal)}</span></div>`;
+    if (sep) {
+      html += `<div class="kv"><span>separating vector (${sep.state})</span>
+        <span>${vec(sep.vector)} |d|=${fmt(sep.magnitude, 4)}</span></div>`;
+    }
     if (epa) {
       html += `<div class="kv"><span>EPA depth</span><span>${fmt(epa.depth, 4)}</span></div>`;
       html += `<div class="kv"><span>SAT depth</span><span>${fmt(pair.sat?.depth, 4)}</span></div>`;
+      html += `<div class="kv"><span>GJK distance</span><span>${fmt(pair.gjk.distance, 4)}</span></div>`;
       html += `<div class="kv"><span>stop reason</span><span>${epa.stopReason}</span></div>`;
       if (pair.sat?.normal) {
         const dot = Vec2.dot(epa.normal, pair.sat.normal);
@@ -266,6 +323,16 @@ function renderPanel() {
     }
     html += `<div class="kv"><span>contacts (≤2, span kept)</span><span>${m.contacts.length}</span></div>`;
   }
+
+  html += `<h2>Degenerate shape status</h2>`;
+  let anyDegenerate = false;
+  for (const body of scene.world.bodies) {
+    const diagnosis = validateConvex(body.shape.localVerts);
+    if (!diagnosis.ok) anyDegenerate = true;
+    html += `<div class="kv ${diagnosis.ok ? '' : 'degen'}"><span>${body.label}</span>
+      <span>${diagnosis.status} (${diagnosis.vertexCount}v${diagnosis.ok ? `, area ${fmt(diagnosis.area, 3)}` : ''})</span></div>`;
+  }
+  if (!anyDegenerate) html += `<div class="muted">All constructed bodies are valid strictly-convex polygons; rejected point/line inputs are reported via the CLI.</div>`;
 
   html += `<h2>Per-contact impulse trace</h2>`;
   if (traces.length === 0) {
@@ -297,6 +364,7 @@ function renderPanel() {
     <span class="swatch" style="background:${COLORS.normal}"></span><span>push-out normal n (B moves +n)</span>
     <span class="swatch" style="background:${COLORS.support}"></span><span>GJK support query / D vertex</span>
     <span class="swatch" style="background:${COLORS.epa}"></span><span>EPA expanding polytope (D space)</span>
+    <span class="swatch" style="background:${COLORS.separation}"></span><span>separating vector (live GJK/SAT)</span>
     <span class="swatch" style="background:${COLORS.witness}"></span><span>witness points on A and B</span>
     <span class="swatch" style="background:${COLORS.aabb}"></span><span>AABB broadphase (filter only)</span>
   </div>`;
@@ -305,20 +373,25 @@ function renderPanel() {
 }
 
 function frame(now) {
-  const elapsed = Math.min(0.1, (now - last) / 1000);
-  last = now;
-  if (running) {
-    accumulator += elapsed * Number(speedSelect.value);
-    let guard = 0;
-    while (accumulator >= FIXED_DT && guard < 8) {
-      scene.world.step(FIXED_DT);
-      scene.solver.step(FIXED_DT);
-      accumulator -= FIXED_DT;
-      guard++;
+  try {
+    const elapsed = Math.min(0.1, (now - last) / 1000);
+    last = now;
+    if (running) {
+      accumulator += elapsed * Number(speedSelect.value);
+      let guard = 0;
+      while (accumulator >= FIXED_DT && guard < 8) {
+        scene.world.step(FIXED_DT);
+        scene.solver.step(FIXED_DT);
+        accumulator -= FIXED_DT;
+        guard++;
+      }
     }
+    render();
+    renderPanel();
+    clearError();
+  } catch (err) {
+    showError(err);
   }
-  render();
-  renderPanel();
   requestAnimationFrame(frame);
 }
 
@@ -333,11 +406,16 @@ playBtn.addEventListener('click', () => {
   playBtn.classList.toggle('active', running);
 });
 stepBtn.addEventListener('click', () => {
-  running = false;
-  playBtn.textContent = 'Play';
-  playBtn.classList.remove('active');
-  scene.world.step(FIXED_DT);
-  scene.solver.step(FIXED_DT);
+  try {
+    running = false;
+    playBtn.textContent = 'Play';
+    playBtn.classList.remove('active');
+    scene.world.step(FIXED_DT);
+    scene.solver.step(FIXED_DT);
+    clearError();
+  } catch (err) {
+    showError(err);
+  }
 });
 resetBtn.addEventListener('click', resetScene);
 sceneSelect.addEventListener('change', resetScene);

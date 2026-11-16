@@ -82,9 +82,21 @@
     .issue { color: var(--bad); font-size: 12px; }
     .hint { color: var(--muted); font-size: 12px; margin-top: 6px; }
     .toggle { display: flex; align-items: center; gap: 6px; }
+    .banner {
+      display: none;
+      margin: 0;
+      padding: 8px 16px;
+      background: rgba(239,125,125,0.18);
+      border-bottom: 1px solid var(--bad);
+      color: var(--bad);
+      font-weight: 600;
+    }
+    .banner.show { display: block; }
+    .degen { color: var(--warn); font-size: 12px; }
   </style>
 </head>
 <body>
+  <div id="error-banner" class="banner" role="alert"></div>
   <header>
     <h1>Convex Contact Kit</h1>
     <div class="group">
@@ -109,6 +121,7 @@
       <label class="toggle"><input type="checkbox" id="show-support" checked /> Support</label>
       <label class="toggle"><input type="checkbox" id="show-epa" checked /> EPA</label>
       <label class="toggle"><input type="checkbox" id="show-manifold" checked /> Manifold</label>
+      <label class="toggle"><input type="checkbox" id="show-separation" checked /> Separation</label>
       <label class="toggle"><input type="checkbox" id="show-aabb" /> AABB</label>
     </div>
   </header>
